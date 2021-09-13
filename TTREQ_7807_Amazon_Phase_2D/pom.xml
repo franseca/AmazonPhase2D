@@ -1,0 +1,12 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.tecnotree.amazon2d</groupId>
+  <artifactId>Amazon_Phase_2D</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Amazon Phase 2D</name>
+  <description>Amazon Phase 2D</description>
+  <modules>
+  	<module>TTREQ_7807-api</module>
+  </modules>
+</project>
