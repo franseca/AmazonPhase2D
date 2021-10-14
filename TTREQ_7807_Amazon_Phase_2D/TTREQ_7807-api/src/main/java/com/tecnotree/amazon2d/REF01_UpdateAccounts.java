@@ -27,18 +27,15 @@ import com.tecnotree.tools.Tn3MySQL;
  * Input parameters: Date from
  */
 
-/**
- * @author cevalfr
- *
- */
-/**
- * @author cevalfr
- *
- */
 public class REF01_UpdateAccounts{
 	
 	//CONSTANTES
 	private static String PROP_FILE_NAME = "configurationUpdateAccounts.properties";
+	private static String PROMO_ID_1 = "1";
+	private static String PROMO_ID_2 = "2";
+	private static String PROMO_ID_3 = "3";
+	private static String PROMO_ID_4 = "4";
+	private static String PROMO_ID_5 = "5";
 		
 	//VARIABLES
 	private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -63,12 +60,12 @@ public class REF01_UpdateAccounts{
   		}else {
   			
   			//Input parameters
-  			String dateCreatedFrom = args[0];
-  			if(args.length == 2)//SI SE ENVIA PARAMETRO SSH
-  				withSsh = args[1];
+  			/*String dateCreatedFrom = args[0];
+  			if(args.length == 2)//SI SE ENVIA PARAMETRO SSH*/
+  				withSsh = args[0];
   			
   			//VALIDO QUE LA FECHA SEA DEL FORMATO CORRECTO
-	  		if(!Pattern.matches(pattern1, dateCreatedFrom)) {
+	  		/*if(!Pattern.matches(pattern1, dateCreatedFrom)) {
 	  			System.out.println(dateFormat.format(new Date()) + " - The parameter DATE don't have the correct format. The formats must be: yyyy-MM-dd.");
 	  			System.out.println(dateFormat.format(new Date()) + " - Finished UpdateAccounts.");
 	  			return;
@@ -90,6 +87,7 @@ public class REF01_UpdateAccounts{
 	  			}
 			
 	  		}//FIN DE if(Pattern.matches(pattern1, date)) {
+	  		*/
 	  		
 	  		//VALIDO QUE EL PARAMETRO SSH SEA N O S
 	  		if(!withSsh.equals(""))
@@ -122,7 +120,14 @@ public class REF01_UpdateAccounts{
 		  		logger.info("Starting updates accounts...");
 		  		
 		  		//ACTUALIZO LOS REGISTROS DESDE LA FECHA DE CREACION DE LA CUENTA
-		  		updateAccounts(dateCreatedFrom);
+		  		//updateAccounts(dateCreatedFrom);
+		  		
+		  		//ACTUALIZO LOS REGISTROS SEGUN EL ID
+		  		updateAccountsID1();
+		  		updateAccountsID2();
+		  		updateAccountsID3();
+		  		updateAccountsID4();
+		  		updateAccountsID5();
 		  		
 		  		System.out.println(dateFormat.format(new Date()) + " - Finished update accounts.");
   		  		logger.info("Finished update accounts.");
@@ -375,7 +380,7 @@ public class REF01_UpdateAccounts{
     	Statement stmt = conn.createStatement();
 		String sql = "";
 	            
-		sql = "UPDATE ACCOUNT A SET PROMOID = "+idPromotion+" WHERE A.ID = "+idAccount+";";
+		sql = "UPDATE ACCOUNT A SET A.PROMOID = "+idPromotion+" WHERE A.ID = "+idAccount+";";
 		
 		//System.out.println(sql);
 		
@@ -384,4 +389,535 @@ public class REF01_UpdateAccounts{
 		stmt.close();
     }	
     
+    /**
+	 * Method update the accounts with ID=1
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws JSchException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+    private static void updateAccountsID1() throws ClassNotFoundException, SQLException, JSchException, InstantiationException, IllegalAccessException {
+    	
+    	PreparedStatement stmt = null;
+    	ResultSet rs = null;
+		String query = "";
+		int totalAccountsUpdated = 0;
+		int totalAccountsConsulted = 0;
+	            
+        //ESTABLEZCO CONEXION A LA BASE DE DATOS
+	    tMySql = new Tn3MySQL();
+	    
+	    if(withSsh.equalsIgnoreCase("Y")) {
+	        System.out.println(dateFormat.format(new Date()) + " - Doing SSH tunnel to connect toward database...");
+	        logger.info("Doing SSH tunnel to connect toward database...");
+	      		
+	        tMySql.doSshTunnel(ssh_user, ssh_password, ssh_host, Integer.parseInt(ssh_port), db_ipServer, Integer.parseInt(db_portServer), Integer.parseInt(db_portServer));
+	    }
+	    
+        System.out.println(dateFormat.format(new Date()) + " - Connecting to database " + db_ipServer + "...");
+        logger.info("Connecting to database " + db_ipServer + "...");	
+        
+        conn = tMySql.startConnection(db_ipServer, db_portServer, db_schema, db_user, db_password);
+        
+        System.out.println(dateFormat.format(new Date()) + " - Getting the accounts to set PROMO_ID = 1...");
+        logger.info("Getting the accounts to set PROMO_ID = 1...");
+        
+        query = "SELECT *\r\n"
+        		+ "FROM amazon_service.ACCOUNT\r\n"
+        		+ "where PROMOID = 'tdpper-video-addon'\r\n"
+        		+ "and INDICATORMT = 'N'\r\n"
+        		+ "and SUBSCRIPTIONSTATUS IN ('SUBSCRIBED','UNSUBSCRIBED','PENDING_UNSUBSCRIPTION');";
+		
+        stmt = conn.prepareStatement(query);
+		rs = stmt.executeQuery();
+		  
+		//System.out.println(query);
+		while (rs.next()) {
+			
+			totalAccountsConsulted++;
+			
+			String idAccount = rs.getString("ID");
+			String promoId = rs.getString("PROMOID");
+			String indicatorMt = rs.getString("INDICATORMT");
+			
+			System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
+			logger.info("###### Record No. " + totalAccountsConsulted + " ########");
+			System.out.println ("ID: " + idAccount);
+			logger.info("ID: " + idAccount);
+			System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
+			logger.info("DATECREATED: " + rs.getString("DATECREATED"));
+			System.out.println ("ALIAS: " + rs.getString("ALIAS"));
+			logger.info("ALIAS: " + rs.getString("ALIAS"));
+			System.out.println ("MSISDN: " + rs.getString("MSISDN"));
+			logger.info("MSISDN: " + rs.getString("MSISDN"));
+			System.out.println ("PROMOID: " + promoId);
+			logger.info("PROMOID: " + promoId);
+			System.out.println ("INDICATORMT: " + indicatorMt);
+			logger.info("INDICATORMT: " + indicatorMt);
+			System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+			logger.info("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+						
+			//ACTUALIZO EL PROMOID DE LA TABLA ACCOUNT
+			updatePromoIdAccounts(idAccount, PROMO_ID_1);
+			
+			totalAccountsUpdated ++;
+			System.out.println ("Record was updated.");
+			logger.info("Record was updated.");
+			
+			System.out.println ("##############################");
+			logger.info("##############################");
+			
+		}
+						
+		rs.close();
+		stmt.close();
+		  
+		//MUESTRO TOTALES
+		System.out.println(dateFormat.format(new Date()) + " - Total records consulted: " + totalAccountsConsulted);
+		logger.info("Total records consulted: " + totalAccountsConsulted);	
+		
+		System.out.println(dateFormat.format(new Date()) + " - Total records updated: " + totalAccountsUpdated);
+		logger.info("Total records updated: " + totalAccountsUpdated);	
+		
+		//CIERRO CONEXION CON LA BASE DE DATOS
+		tMySql.finalizarConexion();
+		System.out.println(dateFormat.format(new Date()) + " - Connection to database closed.");
+		logger.info("Connection to database closed.");	
+		
+		if(withSsh.equalsIgnoreCase("Y")) {
+			System.out.println(dateFormat.format(new Date()) + " - SSH tunnel toward database closed.");
+	        logger.info("SSH tunnel toward database  closed.");	
+			tMySql.closeSshTunnel();
+		}
+	    
+	
+    }	
+    
+    /**
+	 * Method update the accounts with ID=2
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws JSchException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+    private static void updateAccountsID2() throws ClassNotFoundException, SQLException, JSchException, InstantiationException, IllegalAccessException {
+    	
+    	PreparedStatement stmt = null;
+    	ResultSet rs = null;
+		String query = "";
+		int totalAccountsUpdated = 0;
+		int totalAccountsConsulted = 0;
+	            
+        //ESTABLEZCO CONEXION A LA BASE DE DATOS
+	    tMySql = new Tn3MySQL();
+	    
+	    if(withSsh.equalsIgnoreCase("Y")) {
+	        System.out.println(dateFormat.format(new Date()) + " - Doing SSH tunnel to connect toward database...");
+	        logger.info("Doing SSH tunnel to connect toward database...");
+	      		
+	        tMySql.doSshTunnel(ssh_user, ssh_password, ssh_host, Integer.parseInt(ssh_port), db_ipServer, Integer.parseInt(db_portServer), Integer.parseInt(db_portServer));
+	    }
+	    
+	    System.out.println(dateFormat.format(new Date()) + " - Connecting to database " + db_ipServer + "...");
+        logger.info("Connecting to database " + db_ipServer + "...");	
+        
+        conn = tMySql.startConnection(db_ipServer, db_portServer, db_schema, db_user, db_password);
+        
+        System.out.println(dateFormat.format(new Date()) + " - Getting the accounts to set PROMO_ID = 2...");
+        logger.info("Getting the accounts to set PROMO_ID = 2...");
+        
+        query = "SELECT *\r\n"
+        		+ "FROM amazon_service.ACCOUNT\r\n"
+        		+ "where PROMOID = 'tdpper-video-addon'\r\n"
+        		+ "and INDICATORMT = 'Y'\r\n"
+        		+ "and SUBSCRIPTIONSTATUS IN ('SUBSCRIBED','UNSUBSCRIBED','PENDING_UNSUBSCRIPTION');";
+		
+        stmt = conn.prepareStatement(query);
+		rs = stmt.executeQuery();
+		  
+		//System.out.println(query);
+		while (rs.next()) {
+			
+			totalAccountsConsulted++;
+			
+			String idAccount = rs.getString("ID");
+			String promoId = rs.getString("PROMOID");
+			String indicatorMt = rs.getString("INDICATORMT");
+			
+			System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
+			logger.info("###### Record No. " + totalAccountsConsulted + " ########");
+			System.out.println ("ID: " + idAccount);
+			logger.info("ID: " + idAccount);
+			System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
+			logger.info("DATECREATED: " + rs.getString("DATECREATED"));
+			System.out.println ("ALIAS: " + rs.getString("ALIAS"));
+			logger.info("ALIAS: " + rs.getString("ALIAS"));
+			System.out.println ("MSISDN: " + rs.getString("MSISDN"));
+			logger.info("MSISDN: " + rs.getString("MSISDN"));
+			System.out.println ("PROMOID: " + promoId);
+			logger.info("PROMOID: " + promoId);
+			System.out.println ("INDICATORMT: " + indicatorMt);
+			logger.info("INDICATORMT: " + indicatorMt);
+			System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+			logger.info("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+						
+			//ACTUALIZO EL PROMOID DE LA TABLA ACCOUNT
+			updatePromoIdAccounts(idAccount, PROMO_ID_2);
+			
+			totalAccountsUpdated ++;
+			System.out.println ("Record was updated.");
+			logger.info("Record was updated.");
+			
+			System.out.println ("##############################");
+			logger.info("##############################");
+			
+		}
+						
+		rs.close();
+		stmt.close();
+		  
+		//MUESTRO TOTALES
+		System.out.println(dateFormat.format(new Date()) + " - Total records consulted: " + totalAccountsConsulted);
+		logger.info("Total records consulted: " + totalAccountsConsulted);	
+		
+		System.out.println(dateFormat.format(new Date()) + " - Total records updated: " + totalAccountsUpdated);
+		logger.info("Total records updated: " + totalAccountsUpdated);	
+		
+		//CIERRO CONEXION CON LA BASE DE DATOS
+		tMySql.finalizarConexion();
+		System.out.println(dateFormat.format(new Date()) + " - Connection to database closed.");
+		logger.info("Connection to database closed.");	
+		
+		if(withSsh.equalsIgnoreCase("Y")) {
+			System.out.println(dateFormat.format(new Date()) + " - SSH tunnel toward database closed.");
+	        logger.info("SSH tunnel toward database  closed.");	
+			tMySql.closeSshTunnel();
+		}
+	    
+	
+    }	
+    
+    /**
+	 * Method update the accounts with ID=3
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws JSchException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+    private static void updateAccountsID3() throws ClassNotFoundException, SQLException, JSchException, InstantiationException, IllegalAccessException {
+    	
+    	PreparedStatement stmt = null;
+    	ResultSet rs = null;
+		String query = "";
+		int totalAccountsUpdated = 0;
+		int totalAccountsConsulted = 0;
+	            
+        //ESTABLEZCO CONEXION A LA BASE DE DATOS
+	    tMySql = new Tn3MySQL();
+	    
+	    if(withSsh.equalsIgnoreCase("Y")) {
+	        System.out.println(dateFormat.format(new Date()) + " - Doing SSH tunnel to connect toward database...");
+	        logger.info("Doing SSH tunnel to connect toward database...");
+	      		
+	        tMySql.doSshTunnel(ssh_user, ssh_password, ssh_host, Integer.parseInt(ssh_port), db_ipServer, Integer.parseInt(db_portServer), Integer.parseInt(db_portServer));
+	    }
+	    
+	    System.out.println(dateFormat.format(new Date()) + " - Connecting to database " + db_ipServer + "...");
+        logger.info("Connecting to database " + db_ipServer + "...");	
+        
+        conn = tMySql.startConnection(db_ipServer, db_portServer, db_schema, db_user, db_password);
+        
+        System.out.println(dateFormat.format(new Date()) + " - Getting the accounts to set PROMO_ID = 3...");
+        logger.info("Getting the accounts to set PROMO_ID = 3...");
+        
+        query = "SELECT *\r\n"
+        		+ "FROM amazon_service.ACCOUNT\r\n"
+        		+ "where PROMOID = 'tdpper-video-addon-promo'\r\n"
+        		+ "and INDICATORMT = 'N'\r\n"
+        		+ "and SUBSCRIPTIONSTATUS IN ('SUBSCRIBED','UNSUBSCRIBED','PENDING_UNSUBSCRIPTION');";
+		
+        stmt = conn.prepareStatement(query);
+		rs = stmt.executeQuery();
+		  
+		//System.out.println(query);
+		while (rs.next()) {
+			
+			totalAccountsConsulted++;
+			
+			String idAccount = rs.getString("ID");
+			String promoId = rs.getString("PROMOID");
+			String indicatorMt = rs.getString("INDICATORMT");
+			
+			System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
+			logger.info("###### Record No. " + totalAccountsConsulted + " ########");
+			System.out.println ("ID: " + idAccount);
+			logger.info("ID: " + idAccount);
+			System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
+			logger.info("DATECREATED: " + rs.getString("DATECREATED"));
+			System.out.println ("ALIAS: " + rs.getString("ALIAS"));
+			logger.info("ALIAS: " + rs.getString("ALIAS"));
+			System.out.println ("MSISDN: " + rs.getString("MSISDN"));
+			logger.info("MSISDN: " + rs.getString("MSISDN"));
+			System.out.println ("PROMOID: " + promoId);
+			logger.info("PROMOID: " + promoId);
+			System.out.println ("INDICATORMT: " + indicatorMt);
+			logger.info("INDICATORMT: " + indicatorMt);
+			System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+			logger.info("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+						
+			//ACTUALIZO EL PROMOID DE LA TABLA ACCOUNT
+			updatePromoIdAccounts(idAccount, PROMO_ID_3);
+			
+			totalAccountsUpdated ++;
+			System.out.println ("Record was updated.");
+			logger.info("Record was updated.");
+			
+			System.out.println ("##############################");
+			logger.info("##############################");
+			
+		}
+						
+		rs.close();
+		stmt.close();
+		  
+		//MUESTRO TOTALES
+		System.out.println(dateFormat.format(new Date()) + " - Total records consulted: " + totalAccountsConsulted);
+		logger.info("Total records consulted: " + totalAccountsConsulted);	
+		
+		System.out.println(dateFormat.format(new Date()) + " - Total records updated: " + totalAccountsUpdated);
+		logger.info("Total records updated: " + totalAccountsUpdated);	
+		
+		//CIERRO CONEXION CON LA BASE DE DATOS
+		tMySql.finalizarConexion();
+		System.out.println(dateFormat.format(new Date()) + " - Connection to database closed.");
+		logger.info("Connection to database closed.");	
+		
+		if(withSsh.equalsIgnoreCase("Y")) {
+			System.out.println(dateFormat.format(new Date()) + " - SSH tunnel toward database closed.");
+	        logger.info("SSH tunnel toward database  closed.");	
+			tMySql.closeSshTunnel();
+		}
+	    
+	
+    }	
+    
+    /**
+	 * Method update the accounts with ID=4
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws JSchException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+    private static void updateAccountsID4() throws ClassNotFoundException, SQLException, JSchException, InstantiationException, IllegalAccessException {
+    	
+    	PreparedStatement stmt = null;
+    	ResultSet rs = null;
+		String query = "";
+		int totalAccountsUpdated = 0;
+		int totalAccountsConsulted = 0;
+	            
+        //ESTABLEZCO CONEXION A LA BASE DE DATOS
+	    tMySql = new Tn3MySQL();
+	    
+	    if(withSsh.equalsIgnoreCase("Y")) {
+	        System.out.println(dateFormat.format(new Date()) + " - Doing SSH tunnel to connect toward database...");
+	        logger.info("Doing SSH tunnel to connect toward database...");
+	      		
+	        tMySql.doSshTunnel(ssh_user, ssh_password, ssh_host, Integer.parseInt(ssh_port), db_ipServer, Integer.parseInt(db_portServer), Integer.parseInt(db_portServer));
+	    }
+	    
+	    System.out.println(dateFormat.format(new Date()) + " - Connecting to database " + db_ipServer + "...");
+        logger.info("Connecting to database " + db_ipServer + "...");	
+        
+        conn = tMySql.startConnection(db_ipServer, db_portServer, db_schema, db_user, db_password);
+        
+        System.out.println(dateFormat.format(new Date()) + " - Getting the accounts to set PROMO_ID = 4...");
+        logger.info("Getting the accounts to set PROMO_ID = 4...");
+        
+        query = "SELECT *\r\n"
+        		+ "FROM amazon_service.ACCOUNT\r\n"
+        		+ "where PROMOID = 'tdpper-video-addon-promo'\r\n"
+        		+ "and INDICATORMT = 'Y'\r\n"
+        		+ "and DATEACTIVATEDDOCOMO < '2021-06-11 08:00:00'\r\n"
+        		+ "and SUBSCRIPTIONSTATUS IN ('SUBSCRIBED','UNSUBSCRIBED','PENDING_UNSUBSCRIPTION');";
+		
+        stmt = conn.prepareStatement(query);
+		rs = stmt.executeQuery();
+		  
+		//System.out.println(query);
+		while (rs.next()) {
+			
+			totalAccountsConsulted++;
+			
+			String idAccount = rs.getString("ID");
+			String promoId = rs.getString("PROMOID");
+			String indicatorMt = rs.getString("INDICATORMT");
+			
+			System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
+			logger.info("###### Record No. " + totalAccountsConsulted + " ########");
+			System.out.println ("ID: " + idAccount);
+			logger.info("ID: " + idAccount);
+			System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
+			logger.info("DATECREATED: " + rs.getString("DATECREATED"));
+			System.out.println ("ALIAS: " + rs.getString("ALIAS"));
+			logger.info("ALIAS: " + rs.getString("ALIAS"));
+			System.out.println ("MSISDN: " + rs.getString("MSISDN"));
+			logger.info("MSISDN: " + rs.getString("MSISDN"));
+			System.out.println ("PROMOID: " + promoId);
+			logger.info("PROMOID: " + promoId);
+			System.out.println ("INDICATORMT: " + indicatorMt);
+			logger.info("INDICATORMT: " + indicatorMt);
+			System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+			logger.info("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+						
+			//ACTUALIZO EL PROMOID DE LA TABLA ACCOUNT
+			updatePromoIdAccounts(idAccount, PROMO_ID_4);
+			
+			totalAccountsUpdated ++;
+			System.out.println ("Record was updated.");
+			logger.info("Record was updated.");
+			
+			System.out.println ("##############################");
+			logger.info("##############################");
+			
+		}
+						
+		rs.close();
+		stmt.close();
+		  
+		//MUESTRO TOTALES
+		System.out.println(dateFormat.format(new Date()) + " - Total records consulted: " + totalAccountsConsulted);
+		logger.info("Total records consulted: " + totalAccountsConsulted);	
+		
+		System.out.println(dateFormat.format(new Date()) + " - Total records updated: " + totalAccountsUpdated);
+		logger.info("Total records updated: " + totalAccountsUpdated);	
+		
+		//CIERRO CONEXION CON LA BASE DE DATOS
+		tMySql.finalizarConexion();
+		System.out.println(dateFormat.format(new Date()) + " - Connection to database closed.");
+		logger.info("Connection to database closed.");	
+		
+		if(withSsh.equalsIgnoreCase("Y")) {
+			System.out.println(dateFormat.format(new Date()) + " - SSH tunnel toward database closed.");
+	        logger.info("SSH tunnel toward database  closed.");	
+			tMySql.closeSshTunnel();
+		}
+	    
+	
+    }	
+    
+    /**
+	 * Method update the accounts with ID=5
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws JSchException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+    private static void updateAccountsID5() throws ClassNotFoundException, SQLException, JSchException, InstantiationException, IllegalAccessException {
+    	
+    	PreparedStatement stmt = null;
+    	ResultSet rs = null;
+		String query = "";
+		int totalAccountsUpdated = 0;
+		int totalAccountsConsulted = 0;
+	            
+        //ESTABLEZCO CONEXION A LA BASE DE DATOS
+	    tMySql = new Tn3MySQL();
+	    
+	    if(withSsh.equalsIgnoreCase("Y")) {
+	        System.out.println(dateFormat.format(new Date()) + " - Doing SSH tunnel to connect toward database...");
+	        logger.info("Doing SSH tunnel to connect toward database...");
+	      		
+	        tMySql.doSshTunnel(ssh_user, ssh_password, ssh_host, Integer.parseInt(ssh_port), db_ipServer, Integer.parseInt(db_portServer), Integer.parseInt(db_portServer));
+	    }
+	    
+	    System.out.println(dateFormat.format(new Date()) + " - Connecting to database " + db_ipServer + "...");
+        logger.info("Connecting to database " + db_ipServer + "...");
+        
+        conn = tMySql.startConnection(db_ipServer, db_portServer, db_schema, db_user, db_password);
+        
+        System.out.println(dateFormat.format(new Date()) + " - Getting the accounts to set PROMO_ID = 5...");
+        logger.info("Getting the accounts to set PROMO_ID = 5...");
+        
+        query = "SELECT *\r\n"
+        		+ "FROM amazon_service.ACCOUNT\r\n"
+        		+ "where PROMOID = 'tdpper-video-addon-promo'\r\n"
+        		+ "and INDICATORMT = 'Y'\r\n"
+        		+ "and DATEACTIVATEDDOCOMO > '2021-06-11 08:00:00'\r\n"
+        		+ "and SUBSCRIPTIONSTATUS IN ('SUBSCRIBED','UNSUBSCRIBED','PENDING_UNSUBSCRIPTION');";
+		
+        stmt = conn.prepareStatement(query);
+		rs = stmt.executeQuery();
+		  
+		//System.out.println(query);
+		while (rs.next()) {
+			
+			totalAccountsConsulted++;
+			
+			String idAccount = rs.getString("ID");
+			String promoId = rs.getString("PROMOID");
+			String indicatorMt = rs.getString("INDICATORMT");
+			
+			System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
+			logger.info("###### Record No. " + totalAccountsConsulted + " ########");
+			System.out.println ("ID: " + idAccount);
+			logger.info("ID: " + idAccount);
+			System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
+			logger.info("DATECREATED: " + rs.getString("DATECREATED"));
+			System.out.println ("ALIAS: " + rs.getString("ALIAS"));
+			logger.info("ALIAS: " + rs.getString("ALIAS"));
+			System.out.println ("MSISDN: " + rs.getString("MSISDN"));
+			logger.info("MSISDN: " + rs.getString("MSISDN"));
+			System.out.println ("PROMOID: " + promoId);
+			logger.info("PROMOID: " + promoId);
+			System.out.println ("INDICATORMT: " + indicatorMt);
+			logger.info("INDICATORMT: " + indicatorMt);
+			System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+			logger.info("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+						
+			//ACTUALIZO EL PROMOID DE LA TABLA ACCOUNT
+			updatePromoIdAccounts(idAccount, PROMO_ID_5);
+			
+			totalAccountsUpdated ++;
+			System.out.println ("Record was updated.");
+			logger.info("Record was updated.");
+			
+			System.out.println ("##############################");
+			logger.info("##############################");
+			
+		}
+						
+		rs.close();
+		stmt.close();
+		  
+		//MUESTRO TOTALES
+		System.out.println(dateFormat.format(new Date()) + " - Total records consulted: " + totalAccountsConsulted);
+		logger.info("Total records consulted: " + totalAccountsConsulted);	
+		
+		System.out.println(dateFormat.format(new Date()) + " - Total records updated: " + totalAccountsUpdated);
+		logger.info("Total records updated: " + totalAccountsUpdated);	
+		
+		//CIERRO CONEXION CON LA BASE DE DATOS
+		tMySql.finalizarConexion();
+		System.out.println(dateFormat.format(new Date()) + " - Connection to database closed.");
+		logger.info("Connection to database closed.");	
+		
+		if(withSsh.equalsIgnoreCase("Y")) {
+			System.out.println(dateFormat.format(new Date()) + " - SSH tunnel toward database closed.");
+	        logger.info("SSH tunnel toward database  closed.");	
+			tMySql.closeSshTunnel();
+		}
+	    
+	
+    }	
 }
