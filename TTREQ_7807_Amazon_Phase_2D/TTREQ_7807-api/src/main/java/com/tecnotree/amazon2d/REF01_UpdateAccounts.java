@@ -442,31 +442,31 @@ public class REF01_UpdateAccounts{
 			String promoId = rs.getString("PROMOID");
 			String indicatorMt = rs.getString("INDICATORMT");
 			
-			System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
+			//System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
 			logger.info("###### Record No. " + totalAccountsConsulted + " ########");
-			System.out.println ("ID: " + idAccount);
+			//System.out.println ("ID: " + idAccount);
 			logger.info("ID: " + idAccount);
-			System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
+			//System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
 			logger.info("DATECREATED: " + rs.getString("DATECREATED"));
-			System.out.println ("ALIAS: " + rs.getString("ALIAS"));
+			//System.out.println ("ALIAS: " + rs.getString("ALIAS"));
 			logger.info("ALIAS: " + rs.getString("ALIAS"));
-			System.out.println ("MSISDN: " + rs.getString("MSISDN"));
+			//System.out.println ("MSISDN: " + rs.getString("MSISDN"));
 			logger.info("MSISDN: " + rs.getString("MSISDN"));
-			System.out.println ("PROMOID: " + promoId);
+			//System.out.println ("PROMOID: " + promoId);
 			logger.info("PROMOID: " + promoId);
-			System.out.println ("INDICATORMT: " + indicatorMt);
+			//System.out.println ("INDICATORMT: " + indicatorMt);
 			logger.info("INDICATORMT: " + indicatorMt);
-			System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+			//System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
 			logger.info("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
 						
 			//ACTUALIZO EL PROMOID DE LA TABLA ACCOUNT
 			updatePromoIdAccounts(idAccount, PROMO_ID_1);
 			
 			totalAccountsUpdated ++;
-			System.out.println ("Record was updated.");
+			//System.out.println ("Record was updated.");
 			logger.info("Record was updated.");
 			
-			System.out.println ("##############################");
+			//System.out.println ("##############################");
 			logger.info("##############################");
 			
 		}
@@ -548,31 +548,31 @@ public class REF01_UpdateAccounts{
 			String promoId = rs.getString("PROMOID");
 			String indicatorMt = rs.getString("INDICATORMT");
 			
-			System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
+			//System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
 			logger.info("###### Record No. " + totalAccountsConsulted + " ########");
-			System.out.println ("ID: " + idAccount);
+			//System.out.println ("ID: " + idAccount);
 			logger.info("ID: " + idAccount);
-			System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
+			//System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
 			logger.info("DATECREATED: " + rs.getString("DATECREATED"));
-			System.out.println ("ALIAS: " + rs.getString("ALIAS"));
+			//System.out.println ("ALIAS: " + rs.getString("ALIAS"));
 			logger.info("ALIAS: " + rs.getString("ALIAS"));
-			System.out.println ("MSISDN: " + rs.getString("MSISDN"));
+			//System.out.println ("MSISDN: " + rs.getString("MSISDN"));
 			logger.info("MSISDN: " + rs.getString("MSISDN"));
-			System.out.println ("PROMOID: " + promoId);
+			//System.out.println ("PROMOID: " + promoId);
 			logger.info("PROMOID: " + promoId);
-			System.out.println ("INDICATORMT: " + indicatorMt);
+			//System.out.println ("INDICATORMT: " + indicatorMt);
 			logger.info("INDICATORMT: " + indicatorMt);
-			System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+			//System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
 			logger.info("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
 						
 			//ACTUALIZO EL PROMOID DE LA TABLA ACCOUNT
 			updatePromoIdAccounts(idAccount, PROMO_ID_2);
 			
 			totalAccountsUpdated ++;
-			System.out.println ("Record was updated.");
+			//System.out.println ("Record was updated.");
 			logger.info("Record was updated.");
 			
-			System.out.println ("##############################");
+			//System.out.println ("##############################");
 			logger.info("##############################");
 			
 		}
@@ -654,31 +654,31 @@ public class REF01_UpdateAccounts{
 			String promoId = rs.getString("PROMOID");
 			String indicatorMt = rs.getString("INDICATORMT");
 			
-			System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
+			//System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
 			logger.info("###### Record No. " + totalAccountsConsulted + " ########");
-			System.out.println ("ID: " + idAccount);
+			//System.out.println ("ID: " + idAccount);
 			logger.info("ID: " + idAccount);
-			System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
+			//System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
 			logger.info("DATECREATED: " + rs.getString("DATECREATED"));
-			System.out.println ("ALIAS: " + rs.getString("ALIAS"));
+			//System.out.println ("ALIAS: " + rs.getString("ALIAS"));
 			logger.info("ALIAS: " + rs.getString("ALIAS"));
-			System.out.println ("MSISDN: " + rs.getString("MSISDN"));
+			//System.out.println ("MSISDN: " + rs.getString("MSISDN"));
 			logger.info("MSISDN: " + rs.getString("MSISDN"));
-			System.out.println ("PROMOID: " + promoId);
+			//System.out.println ("PROMOID: " + promoId);
 			logger.info("PROMOID: " + promoId);
-			System.out.println ("INDICATORMT: " + indicatorMt);
+			//System.out.println ("INDICATORMT: " + indicatorMt);
 			logger.info("INDICATORMT: " + indicatorMt);
-			System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+			//System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
 			logger.info("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
 						
 			//ACTUALIZO EL PROMOID DE LA TABLA ACCOUNT
 			updatePromoIdAccounts(idAccount, PROMO_ID_3);
 			
 			totalAccountsUpdated ++;
-			System.out.println ("Record was updated.");
+			//System.out.println ("Record was updated.");
 			logger.info("Record was updated.");
 			
-			System.out.println ("##############################");
+			//System.out.println ("##############################");
 			logger.info("##############################");
 			
 		}
@@ -761,31 +761,31 @@ public class REF01_UpdateAccounts{
 			String promoId = rs.getString("PROMOID");
 			String indicatorMt = rs.getString("INDICATORMT");
 			
-			System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
+			//System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
 			logger.info("###### Record No. " + totalAccountsConsulted + " ########");
-			System.out.println ("ID: " + idAccount);
+			//System.out.println ("ID: " + idAccount);
 			logger.info("ID: " + idAccount);
-			System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
+			//System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
 			logger.info("DATECREATED: " + rs.getString("DATECREATED"));
-			System.out.println ("ALIAS: " + rs.getString("ALIAS"));
+			//System.out.println ("ALIAS: " + rs.getString("ALIAS"));
 			logger.info("ALIAS: " + rs.getString("ALIAS"));
-			System.out.println ("MSISDN: " + rs.getString("MSISDN"));
+			//System.out.println ("MSISDN: " + rs.getString("MSISDN"));
 			logger.info("MSISDN: " + rs.getString("MSISDN"));
-			System.out.println ("PROMOID: " + promoId);
+			//System.out.println ("PROMOID: " + promoId);
 			logger.info("PROMOID: " + promoId);
-			System.out.println ("INDICATORMT: " + indicatorMt);
+			//System.out.println ("INDICATORMT: " + indicatorMt);
 			logger.info("INDICATORMT: " + indicatorMt);
-			System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+			//System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
 			logger.info("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
 						
 			//ACTUALIZO EL PROMOID DE LA TABLA ACCOUNT
 			updatePromoIdAccounts(idAccount, PROMO_ID_4);
 			
 			totalAccountsUpdated ++;
-			System.out.println ("Record was updated.");
+			//System.out.println ("Record was updated.");
 			logger.info("Record was updated.");
 			
-			System.out.println ("##############################");
+			//System.out.println ("##############################");
 			logger.info("##############################");
 			
 		}
@@ -868,31 +868,31 @@ public class REF01_UpdateAccounts{
 			String promoId = rs.getString("PROMOID");
 			String indicatorMt = rs.getString("INDICATORMT");
 			
-			System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
+			//System.out.println ("###### Record No. " + totalAccountsConsulted + " ########");
 			logger.info("###### Record No. " + totalAccountsConsulted + " ########");
-			System.out.println ("ID: " + idAccount);
+			//System.out.println ("ID: " + idAccount);
 			logger.info("ID: " + idAccount);
-			System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
+			//System.out.println ("DATECREATED: " + rs.getString("DATECREATED"));
 			logger.info("DATECREATED: " + rs.getString("DATECREATED"));
-			System.out.println ("ALIAS: " + rs.getString("ALIAS"));
+			//System.out.println ("ALIAS: " + rs.getString("ALIAS"));
 			logger.info("ALIAS: " + rs.getString("ALIAS"));
-			System.out.println ("MSISDN: " + rs.getString("MSISDN"));
+			//System.out.println ("MSISDN: " + rs.getString("MSISDN"));
 			logger.info("MSISDN: " + rs.getString("MSISDN"));
-			System.out.println ("PROMOID: " + promoId);
+			//System.out.println ("PROMOID: " + promoId);
 			logger.info("PROMOID: " + promoId);
-			System.out.println ("INDICATORMT: " + indicatorMt);
+			//System.out.println ("INDICATORMT: " + indicatorMt);
 			logger.info("INDICATORMT: " + indicatorMt);
-			System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
+			//System.out.println ("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
 			logger.info("DATEACTIVATEDDOCOMO: " + rs.getString("DATEACTIVATEDDOCOMO"));
 						
 			//ACTUALIZO EL PROMOID DE LA TABLA ACCOUNT
 			updatePromoIdAccounts(idAccount, PROMO_ID_5);
 			
 			totalAccountsUpdated ++;
-			System.out.println ("Record was updated.");
+			//System.out.println ("Record was updated.");
 			logger.info("Record was updated.");
 			
-			System.out.println ("##############################");
+			//System.out.println ("##############################");
 			logger.info("##############################");
 			
 		}
